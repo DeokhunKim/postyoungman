@@ -3,16 +3,13 @@ package com.gift.server.stackoverflow;
 import com.gift.server.gift.Answer;
 import com.gift.server.gift.Gift;
 import com.gift.server.gift.Question;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public interface StackExchange {
-    Gift getGift(int pageNum);
-
-    List<Integer> getQuestsByKeyword(String keyword, int limit);
-
-    Question getQuestionByQeustionNum(int questionNum);
-
-    List<Answer> getAnswerByQuestionNum(int questionNum);
+    Gift getGift(String keyword);
+    List<Gift> getGifts(String keyword);
 
 }

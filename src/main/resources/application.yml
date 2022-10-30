@@ -1,0 +1,32 @@
+config:
+  findKeywords:
+    - jupyter
+    - kubernetes
+    - Flutter
+    - Svelte
+    - FastAPI
+    - Terraform
+    - TypeScript
+    - Python
+  tstoryToken: 1d5ea0a2a8c318e3e10af31e0f018edf_4f1ff9d2d958dbc25057c2278d02877d
+  tstoryCategory:
+  interval:
+  stackoverflow:
+    searchKeywordUrl: https://api.stackexchange.com/search/advanced?order=desc&pagesize=5&sort=activity&accepted=True&site=stackoverflow&filter=!)5cCAwGtBdl_lIqqXEEAfdCcBZba
+  naver:
+    SearchUrl: https://openapi.naver.com/v1/papago/n2mt?source=en&target=ko&text=
+    clientStr: X-Naver-Client-Id
+    clientIdCode: UCQRzP_ae3YlNRKHHOwM
+    secretStr: X-Naver-Client-Secret
+    secretCode: Tki_XUpvEO
+spring:
+  jpa:
+    #database-platform: com.shinhan.dictionary.config.SQLDialect
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:sqlite:mydb.db
+    driver-class-name: org.sqlite.JDBC
+  
+
+  
