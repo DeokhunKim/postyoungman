@@ -34,7 +34,7 @@ class TstoryTest {
         post.content = "<h1>테스트 업로드의 내용입니다</h1> <p>잘 나오나?";
 
         Tstory t = new Tstory(config);
-        t.uploadPost(post);
+        //t.uploadPost(post);
 
 
         System.out.println("TstoryTest.uploadPostTest");
