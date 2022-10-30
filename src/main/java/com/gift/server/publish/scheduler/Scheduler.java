@@ -49,15 +49,22 @@ public class Scheduler {
         List<Gift> gifts = stackExchange.getGifts(keyword);
         System.out.println("get gift " + gifts.size());
         List<Gift> tanslateGifts = new ArrayList<>();
+
+
+        int cnt = 0;
         for (Gift gift : gifts) {
             System.out.println("translate...");
             GiftAdaptor giftAdaptor = new GiftAdaptor(gift);
             TranslateBundle translateBundle = naverTranslate.eng2kor_exceptHtml(giftAdaptor);
             Gift translateGift = new GiftAdaptor(gift.question.questionNum, translateBundle).getGift();
             tanslateGifts.add(translateGift);
+            cnt++;
+            if (cnt == 2) {
+                break;
+            }
         }
-
         publishManager.storeGifts(tanslateGifts);
+
         publishManager.postOneGift();
     }
 }

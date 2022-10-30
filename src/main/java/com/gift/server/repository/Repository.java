@@ -31,26 +31,27 @@ public class Repository {
             Statement stat = con.createStatement();
 
             // 이미 파싱 한 건지 확인
-            String validateQuery = "SELETE * FROM stackoverflow_question WHERE ID = " + gift.question.questionNum;
+            String validateQuery = "SELECT * FROM stackoverflow_question WHERE ID = " + gift.question.questionNum;
             ResultSet rs = stat.executeQuery(validateQuery);
-            rs.last();
-            if (rs.getRow() != 0) {
+            if (rs.next()) {
                 return;
             }
 
             //question
             String questionQuery = "INSERT INTO stackoverflow_question VALUES (" +
                     gift.question.questionNum + ",\'" +
-                    gift.question.title + "\',\'" +
-                    gift.question.body + "\'," +
+                    gift.question.title.replaceAll("\'", "\'\'") + "\',\'" +
+                    gift.question.body.replaceAll("\'", "\'\'") + "\'," +
                     0 + ")";
+            System.out.println("questionQuery = " + questionQuery);
             stat.execute(questionQuery);
 
             //answer
             for (Answer answer : gift.answerList) {
                 String answerQuery = "INSERT INTO stackoverflow_answer(question_id, body) VALUES (" +
                         gift.question.questionNum + ",\'" +
-                        answer.body + "\')";
+                        answer.body.replaceAll("\'", "\'\'") + "\')";
+                System.out.println("answerQuery = " + answerQuery);
                 stat.execute(answerQuery);
             }
             stat.close();
@@ -71,7 +72,7 @@ public class Repository {
             String query = "SELECT q.id as questionNum, q.title as title, q.body as questionBody, a.body as answerBody\n" +
                     "FROM stackoverflow_question q, stackoverflow_answer a\n" +
                     "WHERE q.id = a.question_id\n" +
-                    "AND q.isUpload = 0";
+                    "AND q.id = (SELECT id FROM stackoverflow_question WHERE isUpload = 0 LIMIT 1)";
             Statement stat = con.createStatement();
             ResultSet rs = stat.executeQuery(query);
             while(rs.next()) {

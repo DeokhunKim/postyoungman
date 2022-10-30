@@ -29,7 +29,7 @@ public class PublishManager {
 
         Post post = new Post();
         post.title = gift.question.title;
-        post.content = gift.question.body;
+        post.content = "<h1>" + gift.question.title + "</h1>" + gift.question.body;
         for (Answer answer : gift.answerList) {
             post.content += "<br/><hr><br/>";
             post.content += answer.body;

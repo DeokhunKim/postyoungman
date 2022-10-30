@@ -28,8 +28,13 @@ class TstoryTest {
 
     @Test
     void uploadPostTest() {
+        Post post = new Post();
+        post.category = "개발하자";
+        post.title = "테스트 업로드 입니다";
+        post.content = "<h1>테스트 업로드의 내용입니다</h1> <p>잘 나오나?";
 
-
+        Tstory t = new Tstory(config);
+        t.uploadPost(post);
 
 
         System.out.println("TstoryTest.uploadPostTest");

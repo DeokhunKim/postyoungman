@@ -10,10 +10,32 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 public class HttpRequest {
+
+    public boolean request(String url, HttpMethod httpMethod, String body) {
+        HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory(
+                HttpClientBuilder.create().build());
+        RestTemplate template = new RestTemplate(clientHttpRequestFactory);
+        String response = null;
+
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+
+            HttpEntity<String> entity = new HttpEntity<String>( body, headers);
+            ResponseEntity<String> exchange = template.exchange(url, httpMethod, entity, String.class);
+            response = exchange.getBody();
+        } catch (HttpClientErrorException e) {
+            System.out.println(e.toString());
+            return false;
+        }
+        return true;
+    }
 
     public JSONObject getJsonByUrl(String url, HttpMethod httpMethod) {
         return getJsonByUrl(url, httpMethod, null);
@@ -25,6 +47,7 @@ public class HttpRequest {
         String response = null;
 
         try {
+            /*
             if (headers != null) {
                 HttpEntity<String> entity = new HttpEntity<String>("", headers);
                 ResponseEntity<String> exchange = template.exchange(url, httpMethod, entity, String.class);
@@ -32,6 +55,10 @@ public class HttpRequest {
             } else {
                 response = template.getForObject(url, String.class);
             }
+             */
+            HttpEntity<String> entity = new HttpEntity<String>("", headers);
+            ResponseEntity<String> exchange = template.exchange(url, httpMethod, entity, String.class);
+            response = exchange.getBody();
         } catch (HttpClientErrorException e) {
             System.out.println(e.toString());
             return null;

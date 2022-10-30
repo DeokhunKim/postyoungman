@@ -30,4 +30,16 @@ class RepositoryTest {
 
     }
 
+
+    @Test
+    public void regrexTest() {
+        String str = "<p>Let's disregard the <code>MASK</code>, <code>MAX_INT</code> and <code>MIN_INT</code>";
+        System.out.println("str = " + str);
+
+        System.out.println("after = " +str.replaceAll("\'", "\'\'").replaceAll("\"", "\"\""))
+        ;
+
+
+    }
+
 }

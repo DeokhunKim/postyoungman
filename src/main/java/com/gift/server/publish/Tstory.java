@@ -17,6 +17,7 @@ public class Tstory {
     private Config config;
 
     String getCategoryNum(String categoryStr) {
+        System.out.println("Tstory.getCategoryNum - start");
         HttpRequest httpRequest = new HttpRequest();
 
         String url = "https://www.tistory.com/apis/category/list?access_token=" + config.getTstoryToken()
@@ -30,23 +31,35 @@ public class Tstory {
             JSONObject categoryJson = (JSONObject) category;
             if (categoryJson.get("name").equals(categoryStr)) {
                 //System.out.println(categoryJson.get("id"));
+                System.out.println("Tstory.getCategoryNum - end");
                 return (String)categoryJson.get("id");
             }
         }
         // 못찾으면 기타 카테고리
+        System.out.println("Tstory.getCategoryNum - end");
         return "719739";
     }
     boolean uploadPost(Post post) {
-        String requestUrl = "https://www.tistory.com/apis/post/write?access_token=" +
-                config.getTstoryToken() + "&blogName=Cuire&title=" +
-                post.title + "&category=" +
+        System.out.println("Tstory.uploadPost");
+
+        /*String requestUrl = "https://www.tistory.com/apis/post/write?access_token=" +
+                config.getTstoryToken() + "&blogName=Cuire&visibility=3&title=" +
+                post.title.replaceAll("&", "%26") + "&category=" +
                 getCategoryNum(config.getTstoryCategory()) + "&content=" +
-                post.content;
+                post.content.replaceAll("&", "%26");*/
 
+        String requestUrl = "https://www.tistory.com/apis/post/write?access_token=" +
+                config.getTstoryToken() + "&blogName=Cuire&visibility=3&category=" +
+                getCategoryNum(config.getTstoryCategory());
+
+        String body = "{\"title\":\"" + post.title.replaceAll("\\\\", "\\\\\\\\").replaceAll("\n", "\\\\n").replaceAll("\"", "\\\\\"")
+                + "\", \"content\":\"" + post.content.replaceAll("\\\\", "\\\\\\\\").replaceAll("\n", "\\\\n").replaceAll("\"", "\\\\\"") + "\"}" ;
+
+        System.out.println("requestUrl = " + requestUrl);
         HttpRequest httpRequest = new HttpRequest();
-        JSONObject jsonByUrl = httpRequest.getJsonByUrl(requestUrl, HttpMethod.POST);
+        boolean request = httpRequest.request(requestUrl, HttpMethod.POST, body);
 
-        System.out.println("jsonByUrl = " + jsonByUrl);
+        System.out.println("jsonByUrl = " + request);
         return true;
     }
 }
